@@ -8,5 +8,5 @@ samples/*
 .venv
 *.doc
 *.docx
-
+docs/*
 test
