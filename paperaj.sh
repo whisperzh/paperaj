@@ -5,7 +5,9 @@
 
 DOCX=$1
 LATEXFOLDER=$2
-POSTFIX=${DOCX:0:10}
+FILENAME=${DOCX%.*}
+POSTFIX="${FILENAME: -10}"
+
 
 # Exit if no arguments
 if [ $# -eq 0 ]
