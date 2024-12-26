@@ -5,6 +5,7 @@
 
 DOCX=$1
 LATEXFOLDER=$2
+POSTFIX=${DOCX:0:10}
 
 # Exit if no arguments
 if [ $# -eq 0 ]
@@ -15,7 +16,7 @@ fi
 
 # Remove temp files
 rm /tmp/latex-files-*
-[ ! -d "$LATEXFOLDER/paperaj" ] && mkdir "$LATEXFOLDER/paperaj"
+[ ! -d "$LATEXFOLDER/paperaj-$POSTFIX" ] && mkdir "$LATEXFOLDER/paperaj-$POSTFIX"
 
 # Extract media
 "${PANDOCPATH}pandoc" --extract-media $LATEXFOLDER/ -i "$DOCX" -s --wrap=preserve -o /tmp/latex-files-temp-1.md
@@ -46,6 +47,6 @@ do
     if test -f "/tmp/latex-files-$i"; then
         # second part removes the session breat ie H1 header in italics
         cat /tmp/latex-files-$i | sed -e '1,2d' | sed -e 's/\\section{\\texorpdfstring{\\emph{.*//g' > /tmp/latex-files-$ia
-        cp /tmp/latex-files-$ia "$LATEXFOLDER/paperaj/chapter-$i.tex"
+        cp /tmp/latex-files-$ia "$LATEXFOLDER/paperaj-$POSTFIX/chapter-$i.tex"
     fi
 done
