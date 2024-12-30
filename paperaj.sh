@@ -29,12 +29,17 @@ echo "Conversion Complete"
 
 cat /tmp/latex-files-temp-2.tex | sed -e 's/\\hypertarget{.*}{\%//g' > /tmp/latex-files-temp-5.tex
 cat /tmp/latex-files-temp-5.tex | sed -e 's/\\label{.*}//g' > /tmp/latex-files-temp-6a.tex
+
+# add \cite{}
 cat /tmp/latex-files-temp-6a.tex | sed -e 's/\\textbackslash.*cite\\{/\\cite{/g' > /tmp/latex-files-temp-6b.tex
-cat /tmp/latex-files-temp-6b.tex | sed -e 's/\\textbackslash.*citet\\{/\\citet{/g' > /tmp/latex-files-temp-6.tex
+cat /tmp/latex-files-temp-6b.tex | sed -e 's/\\textbackslash.*citet\\{/\\citet{/g' > /tmp/latex-files-temp-6c.tex
+# add \tab -> \qquad
+cat /tmp/latex-files-temp-6c.tex | sed -e 's/\\textbackslash tab/\\qquad/g' > /tmp/latex-files-temp-6d.tex
+
 
 # Remove line breaks added on 3/21/2021
-awk ' /^\\/ { printf("%s \n", $0); } /^$/ { print "\n"; }  /^[^\\].*/ { printf("%s ", $0); } END { print ""; } ' /tmp/latex-files-temp-6.tex > /tmp/latex-files-temp-6c.tex
-python images.py /tmp/latex-files-temp-6c.tex /tmp/latex-files-temp-7.tex
+awk ' /^\\/ { printf("%s \n", $0); } /^$/ { print "\n"; }  /^[^\\].*/ { printf("%s ", $0); } END { print ""; } ' /tmp/latex-files-temp-6d.tex > /tmp/latex-files-temp-6e.tex
+python images.py /tmp/latex-files-temp-6e.tex /tmp/latex-files-temp-7.tex
 
 # Split file into section chapters. Last one will be references
 csplit -k -f /tmp/latex-files- /tmp/latex-files-temp-7.tex '/\\section{\\texorpdfstring{\\emph{/' '{15}'
