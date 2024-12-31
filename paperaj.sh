@@ -35,14 +35,15 @@ cat /tmp/latex-files-temp-6a.tex | sed -e 's/\\textbackslash.*cite\\{/\\cite{/g'
 cat /tmp/latex-files-temp-6b.tex | sed -e 's/\\textbackslash.*citet\\{/\\citet{/g' > /tmp/latex-files-temp-6c.tex
 # add \tab -> \qquad
 cat /tmp/latex-files-temp-6c.tex | sed -e 's/\\textbackslash tab/\\qquad/g' > /tmp/latex-files-temp-6d.tex
+cat /tmp/latex-files-temp-6d.tex | sed -e 's/\\textbackslash{}tab/\\qquad/g' > /tmp/latex-files-temp-7.tex
 
 
 # Remove line breaks added on 3/21/2021
-awk ' /^\\/ { printf("%s \n", $0); } /^$/ { print "\n"; }  /^[^\\].*/ { printf("%s ", $0); } END { print ""; } ' /tmp/latex-files-temp-6d.tex > /tmp/latex-files-temp-6e.tex
-python images.py /tmp/latex-files-temp-6e.tex /tmp/latex-files-temp-7.tex
+awk ' /^\\/ { printf("%s \n", $0); } /^$/ { print "\n"; }  /^[^\\].*/ { printf("%s ", $0); } END { print ""; } ' /tmp/latex-files-temp-7.tex > /tmp/latex-files-temp-7a.tex
+python images.py /tmp/latex-files-temp-7a.tex /tmp/latex-files-temp-8.tex
 
 # Split file into section chapters. Last one will be references
-csplit -k -f /tmp/latex-files- /tmp/latex-files-temp-7.tex '/\\section{\\texorpdfstring{\\emph{/' '{15}'
+csplit -k -f /tmp/latex-files- /tmp/latex-files-temp-8.tex '/\\section{\\texorpdfstring{\\emph{/' '{15}'
 for i in {0..15} # upto 15 sections
 do
     size=${#i}
