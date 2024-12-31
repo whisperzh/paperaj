@@ -11,12 +11,22 @@ with open(sys.argv[1]) as fp:
 
         # two column figure
         if(line.startswith("Figure ")):
+            print(f"Line: {line}")
             caption = line.strip().split(":")
             caption_figure = caption[0].replace(" ", "_")
             if "TWOCOLUMN" in caption[1]:
                 twocol_figure = True
             caption_text = caption[1].replace("TWOCOLUMN", "").strip()
+            print(f"Caption: {caption_text}")
             line=""
+
+        # if linbe starts with \includegraphics, remove everything between ../ and ///
+        if(line.startswith("\\includegraphics")):
+            line = re.sub(r'\.\./.*?///', '', line)
+            if twocol_figure:
+                line = "\\begin{figure*}[h]\n\caption{" + caption_text +"}\n\centering\n" + line + "\n\end{figure*}\n"
+            else:
+                line = "\\begin{figure}[h]\n\caption{" + caption_text +"}\n\centering\n" + line + "\n\end{figure}\n"
 
         if(line.startswith("\\begin{figure}") and twocol_figure):
             line = line.replace("{figure}", "{figure*}")
@@ -42,6 +52,7 @@ with open(sys.argv[1]) as fp:
         if(line.startswith("\\end{figure}") and latex_rotate):
             line = line.replace("{figure}", "{sidewaysfigure}")
             latex_rotate = False
+
 
         # Line break
         if(line.startswith("\\textbackslash\\textbackslash{}")):
