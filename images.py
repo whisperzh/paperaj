@@ -24,10 +24,10 @@ with open(sys.argv[1]) as fp:
         if(line.startswith("\\includegraphics")):
             line = re.sub(r'\.\./.*?///', '', line)
             if twocol_figure:
-                line = "\\begin{figure*}[h]\n\caption{" + caption_text +"}\n\centering\n" + line + "\n\end{figure*}\n"
+                line = "\\begin{figure*}[h]\n\centering\n" + line + "\n\caption{" + caption_text +"}\n\label{"+caption_figure+"}\n\end{figure*}\n"
             else:
-                line = "\\begin{figure}[h]\n\caption{" + caption_text +"}\n\centering\n" + line + "\n\end{figure}\n"
-
+                line = "\\begin{figure}[h]\n\centering\n" + line + "\n\caption{" + caption_text +"}\n\label{"+caption_figure+"}\n\end{figure}\n"
+                
         if(line.startswith("\\begin{figure}") and twocol_figure):
             line = line.replace("{figure}", "{figure*}")
 
