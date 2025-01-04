@@ -8,12 +8,15 @@ md = markdown.Markdown(extensions=['full_yaml_metadata'])
 md.convert(data)
 
 with open(sys.argv[2], 'w') as abstract:
-    abstract.write(md.Meta['abstract'])
+    if 'abstract' in md.Meta.keys():
+        abstract.write(md.Meta['abstract'])
 
 with open(sys.argv[3], 'w') as title:
-    title.write(md.Meta['title'])
+    if 'title' in md.Meta.keys():
+        title.write(md.Meta['title'])
 
 with open(sys.argv[4], 'w') as author:
-    author.write(md.Meta['author'])
+    if 'author' in md.Meta.keys():
+        author.write(md.Meta['author'])
 
 
